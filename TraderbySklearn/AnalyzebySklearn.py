@@ -218,13 +218,13 @@ def GirdValuate(X_train, y_train):
     神经网络"""
     clf_DT=DecisionTreeClassifier()
     param_grid_DT= {'max_depth': [1,2,3,4,5,6]}
-    clf_Logit=LogisticRegression()
+    clf_Logit=LogisticRegression(multi_class='auto',max_iter=20)
     param_grid_logit= {'solver': ['liblinear','lbfgs','newton-cg','sag']}
     clf_svc=SVC()
     param_grid_svc={'kernel':('linear', 'poly', 'rbf', 'sigmoid'),
                     'C':[1, 2, 4],
                     'gamma':[0.125, 0.25, 0.5 ,1, 2, 4]}
-    clf_mlp = MLPClassifier()
+    clf_mlp = MLPClassifier(max_iter=20)
     param_grid_mlp= {"hidden_layer_sizes": [(100,), (100, 30)],
                                  "solver": ['adam', 'sgd', 'lbfgs'],
                                  "max_iter": [20],
@@ -243,12 +243,13 @@ def GirdValuate(X_train, y_train):
 if __name__ == '__main__':
     # 读取数据
     # exportpath = "C:\\Users\shui0\OneDrive\Documents\Project\\"
-    exportpath = "C:\Project\\"
+    exportpath = "..\\Project\\"
     DA = DataAnalyzerforSklearn(exportpath)
     #数据库导入
-    start = datetime.strptime("20180501", '%Y%m%d')
-    end = datetime.strptime("20190501", '%Y%m%d')
-    df = DA.db2df(db="VnTrader_1Min_Db", collection="rb8888", start = start, end = end)
+    start = datetime.strptime("20190621", '%Y%m%d')
+    end = datetime.strptime("20190715", '%Y%m%d')
+    #df = DA.db2df(db="VnTrader_1Min_Db", collection="rb8888", start = start, end = end)
+    df = DA.csv2df('../TestData/rb1910.csv')
     df5min = DA.df2Barmin(df, 5)
     df5minAdd = DA.addTrend(df5min, export2csv=True)
     df5minAdd = DA.dfMACD(df5minAdd, n=34, export2csv=True)
